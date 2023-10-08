@@ -1,0 +1,116 @@
+import random
+
+
+weapons = ["лук", "меч", "копье", "булава", "щит"]
+armors = ["Нагрудник", "Шлем","Нагрудник + шлем"]
+
+hero = {
+    "оружие": "",
+    "броня": "",
+    "история_действий": []
+}
+
+places = ["Рынок", "Вернуться к дракону", "Домой"]
+
+def choose_armor():
+    while True:
+        print("Выберите броню для героя:")
+        for i, armor in enumerate(armors, 1):
+            print(f"{i}. {armor}")
+
+        try:
+            choice = int(input("Введите номер брони: "))
+            if 1 <= choice <= len(armors):
+                hero["броня"] = armors[choice - 1]
+                break
+            else:
+                print("Пожалуйста, выберите номер из списка.")
+        except ValueError:
+            print("Пожалуйста, введите число.")
+
+def choose_weapon():
+    while True:
+        print("Выберите оружие для сражения с драконом:")
+        for i, weapon in enumerate(weapons, 1):
+            print(f"{i}. {weapon}")
+
+        try:
+            choice = int(input("Введите номер оружия: "))
+            if 1 <= choice <= len(weapons):
+                hero["оружие"] = weapons[choice - 1]
+                break
+            else:
+                print("Пожалуйста, выберите номер из списка.")
+        except ValueError:
+            print("Пожалуйста, введите число.")
+
+
+def battle():
+    choose_armor()
+    choose_weapon()
+    while True:
+        hero_choose = input("Герой говорит: 1.Смерть тебе чудовище, 2. Беги пока не поздно чудовище, 3. Герой устал сегодня. Ваш выбор (1 или 2 или 3): ")
+
+        if hero_choose not in ["1", "2", "3"]:
+            print("Пожалуйста, введите 1, 2 или 3")
+        else:
+            if hero_choose == "1":
+                outcome = random.choice(["Победа героя", "Проигрыш"])
+            elif hero_choose == "2":
+                outcome = random.choice(["Победа героя, Чудовищи не захотело уходить и проиграло.", "Проигрыш, Чудовищи не захотело уходить и победило.", "Чудовище уходит"])
+            elif hero_choose == "3":
+                print("Герой решил отдохнуть.")
+                while True:
+                    print("Выберите, куда пойдет герой после отдыха:")
+                    for i, place in enumerate(places, 1):
+                        print(f"{i}. {place}")
+
+                    try:
+                        choice = int(input("Введите номер места: "))
+                        if 1 <= choice <= len(places):
+                            chosen_place = places[choice - 1]
+
+                            if chosen_place == "Рынок":
+                                print("Герой отправился на Рынок.")
+                            elif chosen_place == "Вернуться к дракону":
+                                print("Герой вернулся к дракону.")
+                                battle()  
+                            elif chosen_place == "Домой":
+                                print("Герой отправился домой.")
+                                while True:
+                                    print("Выберите действие:")
+                                    print("1. Вернуться к сражению")
+                                    print("2. Закончить игру, если дракон побежден или дракон победил.")
+
+                                    try:
+                                        choice = int(input("Введите номер действия: "))
+                                        if choice == 1:
+                                            print("Герой вернулся к сражению.")
+                                            battle()  
+                                        elif choice == 2:
+                                            print("Игра завершена.")
+                                            return  
+                                        else:
+                                            print("Пожалуйста, выберите 1 или 2.")
+                                    except ValueError:
+                                        print("Пожалуйста, введите число.")
+                            break
+                        else:
+                            print("Пожалуйста, выберите номер из списка.")
+                    except ValueError:
+                        print("Пожалуйста, введите число.")
+                return  
+
+            print(outcome)
+            break
+
+
+def main():
+    while True:
+        battle()
+        replay = input("Хотите сыграть ещё раз? (да/нет). Введите 1 если да.: ")
+        if replay.lower() != "1":
+            break
+
+if __name__ == "__main__":
+    main()
